@@ -5,10 +5,6 @@ from .utils import *
 from .views import view_blueprint
 from .cli import cli_blueprint
 
-
-
-
-
 def create_app():
     app = Flask(__name__)
     app.config.from_mapping(
@@ -21,3 +17,5 @@ def create_app():
     app.register_blueprint(view_blueprint)
     app.register_blueprint(cli_blueprint)
     return app
+
+app = create_app()

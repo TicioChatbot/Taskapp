@@ -18,9 +18,12 @@ class User(db.Model):
         return self.username
     
     def carga_laboral_pctg(self, activas):
-        propias = len([task for task in self.backref if task.complete == False])
-        return f'{propias/activas * 100} %'
-    
+        if len(activas) > 0:
+            propias = len([task for task in self.backref if task.complete == False])
+            return f'{propias/activas * 100} %'
+        else: 
+            return '0%'
+        
     def on_time_pctg(self): 
         terminadas = [task for task in self.backref if task.complete == True]
         on_time = [task for task in terminadas if task.overdue == False]
@@ -30,8 +33,11 @@ class User(db.Model):
             return '0%'
     
     def carga_laboral_total(self, activas):
-        propias = len([task for task in self.backref if task.complete == False])
-        return f'{propias}/{activas}'
+        if len(activas) > 0:
+            propias = len([task for task in self.backref if task.complete == False])
+            return f'{propias}/{activas}'
+        else:
+            return '0/0' 
 
     def on_time_total(self): 
         terminadas = [task for task in self.backref if task.complete == True]
