@@ -18,7 +18,7 @@ class User(db.Model):
         return self.username
     
     def carga_laboral_pctg(self, activas):
-        if len(activas) > 0:
+        if activas > 0:
             propias = len([task for task in self.backref if task.complete == False])
             return f'{propias/activas * 100} %'
         else: 
@@ -33,7 +33,7 @@ class User(db.Model):
             return '0%'
     
     def carga_laboral_total(self, activas):
-        if len(activas) > 0:
+        if activas > 0:
             propias = len([task for task in self.backref if task.complete == False])
             return f'{propias}/{activas}'
         else:
