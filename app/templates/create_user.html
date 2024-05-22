@@ -1,0 +1,11 @@
+{% extends "base.html"%}
+{%block title%}Crear Usuario{%endblock%}
+{%block content%}
+<form action="{{url_for('views.post_create_user')}}" method="post">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Nombre de Usuario</label>
+      <input type="text" class="form-control" name="username">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{%endblock%}

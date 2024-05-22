@@ -1,0 +1,43 @@
+{% extends "base.html"%}
+{%block title%}{{project.name}}{%endblock%}
+{%block content%}
+<div class="container-fluid">
+    <div class="container">
+        <h1>{{project.name}}</h1>
+    </div>
+    <div class="container">
+        <br/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Tarea</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Asignado</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"><i class="bi bi-check2-circle"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for task in project.tasks%}
+                {%if not task.complete%}
+                <tr>
+                    <td scope="row">{{task.content}}</td>
+                    <td>{{task.duedate}}</td>
+                    <td>{{task.assigned[0].username}}</td>
+                    <td>{%if task.overdue%}
+                        <i class="bi bi-alarm-fill"></i>
+                        {%else%}
+                        <i class="bi bi-bell"></i>
+                        {%endif%}
+                    </td>
+                    <td><form method="post"><button type="submit"><i class="bi bi-check-square"></i></button></form></td>
+                </tr>
+                {%endif%}
+                {%endfor%}
+            </tbody>
+            </div>
+        </table>
+        
+    </div>
+</div>
+{%endblock%}

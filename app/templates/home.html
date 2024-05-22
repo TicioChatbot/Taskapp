@@ -1,0 +1,32 @@
+{% extends "base.html"%}
+{%block title%}Home{%endblock%}
+{%block content%}
+<div class="container">
+    <br/>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Usuario</th>
+                <th scope="col">Carga laboral</th>
+                <th scope="col">Carga laboral %</th>
+                <th scope="col">A tiempo</th>
+                <th scope="col">A tiempo %</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for user in users%}
+            <tr>
+                <td scope="row">{{user.username}}</td>
+                <td>{{user.carga_laboral_total(activas)}}</td>
+                <td>{{user.carga_laboral_pctg(activas)}}</td>
+                <td>{{user.on_time_total()}}</td>
+                <td>{{user.on_time_pctg()}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+        </div>
+    </table>
+    
+</div>
+</div>
+{%endblock%}
