@@ -1,0 +1,52 @@
+
+            /* General Styles for the Offcanvas */
+            .offcanvas-header {
+                border-bottom: 1px solid #dee2e6;  /* Adds a subtle border for separation */
+            }
+
+            .offcanvas-body {
+                padding-top: 1rem;
+            }
+
+            /* Custom styling for all links within the offcanvas to ensure consistent appearance */
+            .offcanvas-body a {
+                color: #ffff;
+                text-decoration: none;  /* Removes the underline from links */
+            }
+
+            .offcanvas-body a:hover,
+            .offcanvas-body a:focus {
+                color: #ffff;
+                text-decoration: underline;  /* Adds an underline on hover/focus for emphasis */
+            }
+
+            /* Styling for buttons to unify button appearance across the menu */
+            .btn {
+                width: 100%;  /* Makes buttons full width */
+                margin-bottom: 0.5rem;  /* Adds spacing between buttons */
+            }
+
+            /* Dropdown styling to align with the rest of the offcanvas design */
+            .dropdown-menu {
+                width: 100%;  /* Ensures dropdowns take full width of the offcanvas */
+            }
+
+            /* Ensures that dropdown buttons are consistent with other buttons */
+            .dropdown-toggle {
+                width: 100%;  /* Full width for dropdown toggles */
+            }
+            /* Styling for dropdown menus to ensure text and background contrast */
+            .dropdown-menu {
+                background-color: #ffffff;  /* White background for dropdowns for better visibility */
+                color: #000000;  /* Black text color for dropdown items */
+            }
+
+            .dropdown-menu a {
+                color: #000000;  /* Ensures dropdown links are black */
+            }
+
+            .dropdown-menu a:hover,
+            .dropdown-menu a:focus {
+                background-color: #f8f9fa;  /* Light gray for hover/focus backgrounds */
+                color: #000000;  /* Maintain black color for text on hover/focus */
+            }
