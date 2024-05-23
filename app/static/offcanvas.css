@@ -5,6 +5,8 @@
             }
 
             .offcanvas-body {
+                flex-grow: 1;
+                overflow-y: auto;  /* Allows scrolling within the off-canvas body */
                 padding-top: 1rem;
             }
 
@@ -49,4 +51,23 @@
             .dropdown-menu a:focus {
                 background-color: #f8f9fa;  /* Light gray for hover/focus backgrounds */
                 color: #000000;  /* Maintain black color for text on hover/focus */
+            }
+            
+            .offcanvas {
+                display: flex;
+                flex-direction: column;  /* Stacks the header, body, and footer vertically */
+            }
+            
+            /* Subtle footer styling */
+            .offcanvas-footer {
+                padding: 1rem;
+                border-top: 1px solid #dee2e6;  /* Light gray border for subtle separation */
+                text-align: center;
+                color: #6c757d;  /* Soft text color for low visual impact */
+                margin-top: auto;  /* Pushes the footer to the bottom */
+            }
+            
+            /* Small text style for less emphasis */
+            .offcanvas-footer small {
+                font-size: 0.6em;  /* Smaller text for subtlety */
             }
