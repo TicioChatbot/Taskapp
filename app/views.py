@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request 
+from flask import Blueprint, render_template, request, redirect, url_for 
 from .models import *
 from .utils import * 
 from datetime import datetime
@@ -26,7 +26,7 @@ def get_create_user():
 def post_create_user():
     user = request.form['username']
     create_user(user)
-    return get_home()
+    return redirect(url_for('views.get_home'))
 
 @view_blueprint.post('/create_task')
 def post_create_task():
@@ -37,16 +37,16 @@ def post_create_task():
         task_id = create_task(content, duedate, project)
         user_id = int(request.form['user'])
         assign_task(user_id, task_id)
-        return get_home()
+        return redirect(url_for('views.get_home'))
     except:
-        return get_home()
+        return redirect(url_for('views.get_home'))
 
 @view_blueprint.post('/assign_task')
 def post_assign_task():
     user_id = request.form['user']
     task_id = request.form['task']
     assign_task(user_id, task_id)
-    return get_home()
+    return redirect(url_for('views.get_home'))
 
 @view_blueprint.get('/user/<int:user_id>')
 def user_dashboard(user_id):
@@ -65,7 +65,7 @@ def post_user_dashboard(user_id):
     task = Task.query.filter_by(id=int(task_id)).first()
     task.complete = True 
     db.session.commit()
-    return user_dashboard(user_id)
+    return redirect(url_for('views.user_dashboard', user_id=user_id))
 
 @view_blueprint.get('/project/<int:project_id>')
 def project_dashboard(project_id):
@@ -84,13 +84,13 @@ def post_project_dashboard(project_id):
     task = Task.query.filter_by(id=int(task_id)).first()
     task.complete = True 
     db.session.commit()
-    return user_dashboard(project_id)
+    return redirect(url_for('views.project_dashboard', project_id=project_id))
 
 @view_blueprint.post('/create_project')
 def post_create_project():
     project = request.form['name']
     create_project(project)
-    return get_home()
+    return redirect(url_for('views.get_home'))
 
 @view_blueprint.get('/create_project')
 def get_create_project():

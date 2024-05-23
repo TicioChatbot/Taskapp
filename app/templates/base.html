@@ -59,41 +59,35 @@
             </div>
           </div>
         <br>
-        <div class="container-fluid px-5">
+        <div class="container-fluid px-3 px-md-5">
             <form class="row gx-5" method="post" action="{{url_for('views.post_create_task')}}">
-                <div class="col-auto">
-                    <label class="form-label">Crear Tarea</label>
+                <div class="col-12 col-md-auto">
+                    <input type="text" class="form-control" name="content" placeholder="Tarea">
                 </div>
-                <div class="col-auto">
-                    <input type="text" class="text" name="content">
+                <div class="col-12 col-md-auto">
+                    <input type="date" class="form-control" name="duedate">
                 </div>
-                <div class="col-auto">
-                    <label class="form-label">Fecha</label>
-                </div>
-                <div class="col-auto">
-                    <input type="date" name="duedate">
-                </div>
-                <div class="col-auto">
-                    <select class="form-select" aria-label="Default select example" name="user">
+                <div class="col-12 col-md-auto">
+                    <select class="form-select"  style="width: 200px;" name="user">
                         <option selected>Usuario</option>
                         {%for user in users %}
                         <option value="{{user.id}}">{{user.username}}</option>
                         {%endfor%}
-                  </select>
+                    </select>
                 </div>
-                <div class="col-auto">
-                    <select class="form-select" aria-label="Default select example" name="project">
+                <div class="col-12 col-md-auto">
+                    <select class="form-select" style="width: 200px;" name="project">
                         <option selected>Proyecto</option>
                         {%for project in projects%}
                         <option value="{{project.id}}">{{project.name}}</option>
                         {%endfor%}
-                  </select>
+                    </select>
                 </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary btn-small">Crear Tarea</button>
+                <div class="col-12 col-md-auto">
+                    <button type="submit" class="btn btn-primary">Crear Tarea</button>
                 </div>
-             </form>
-            </div>
+            </form>
+        </div>
         </div>
         </div>
         <br />

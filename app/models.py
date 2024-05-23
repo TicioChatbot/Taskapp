@@ -56,6 +56,9 @@ class Task(db.Model):
     complete = db.Column(db.Boolean, default=False)
     overdue = db.Column(db.Boolean, default=False)
 
+    def __lt__(self, other): 
+        return self.duedate < other.duedate
+
     def find_project(self):
         project = Project.query.filter_by(id=self.project_id).first()
         return project.name
