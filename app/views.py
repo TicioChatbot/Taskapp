@@ -2,9 +2,15 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from .models import *
 from .utils import * 
 from datetime import datetime
+import os 
 
 date_format = "%Y-%m-%d"
 view_blueprint =Blueprint('views', __name__)
+color = os.environ.get('color', default='#0F54B3')
+
+@view_blueprint.context_processor
+def inject_globals():
+    return make_variabes(color)
 
 @view_blueprint.get('/')
 def get_home(): 
