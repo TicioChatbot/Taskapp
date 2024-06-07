@@ -1,6 +1,10 @@
 from .models import *
+from flask import url_for
+from datetime import datetime
 import os
 
+
+date_format = "%Y-%m-%d"
 
 def create_user(username):
     user = User(username = username)
@@ -13,6 +17,12 @@ def create_task(content, duedate, project_id):
     db.session.add(task)
     db.session.commit()
     return task.id 
+
+def delete_task(task_id):
+    task = Task.query.filter_by(id = int(task_id)).first()
+    db.session.delete(task)
+    db.session.commit()
+    return 'Success!' 
 
 def assign_task(user_id, task_id): 
     user = User.query.filter_by(id=user_id).first()
@@ -27,6 +37,19 @@ def create_project(name):
     db.session.commit()
     return 'Success!'
 
+def change_duedate(task_id, duedate):
+    task = Task.query.filter_by(id=task_id).first()
+    task.duedate = datetime.strptime(duedate, date_format)
+    db.session.commit()
+    return 'Success!'
+
+def find_redirect(type, id): 
+    if type == 'proyect':
+        return url_for('views.project_dashboard', project_id= id)
+    elif type =='user':
+        return url_for('views.user_dashboard', user_id= id)
+    else: 
+        return url_for('views.get_home')
 
 def on_time(user): 
     terminadas = [task for task in user.backref if task.complete == True]
@@ -56,9 +79,11 @@ def adjust_hex_brightness(hex_color, factor):
     return f'#{r:02x}{g:02x}{b:02x}'
 
 
-def make_variabes(color): 
+def make_variables(color): 
     return {
         'color': color,
         'border': adjust_hex_brightness(color, 0.8), 
-        'hover': adjust_hex_brightness(color, 1.2)
+        'hover': adjust_hex_brightness(color, 1.2),
+        'active_color': adjust_hex_brightness(color, 0.6),  
+        'active_border': adjust_hex_brightness(color, 0.5)  
     }

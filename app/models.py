@@ -68,6 +68,8 @@ class Task(db.Model):
             dif = self.duedate - date.today()
             if dif.days < 0: 
                 self.overdue = True
+            else: 
+                self.overdue = False
 
 
 class Project(db.Model):

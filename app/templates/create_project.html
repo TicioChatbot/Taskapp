@@ -1,5 +1,6 @@
 {% extends "base.html"%}
 {%block title%}Crear Usuario{%endblock%}
+{%block origin%}<input type="hidden" value="home" name="type"><input type="hidden" value="0" name="id">{%endblock%}
 {%block content%}
 <form action="{{url_for('views.post_create_project')}}" method="post">
     <div class="mb-3">

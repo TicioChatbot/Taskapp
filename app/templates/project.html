@@ -1,6 +1,7 @@
 {% extends "base.html"%}
 {%block title%}{{project.name}}{%endblock%}
 {%block content%}
+{%block origin%}<input type="hidden" value="proyect" name="type"><input type="hidden" value="{{project.id}}" name="id">{%endblock%}
 <div class="container-fluid">
     <div class="container">
         <h1>{{project.name}}</h1>
@@ -19,6 +20,7 @@
                     <th scope="col">Asignado</th>
                     <th scope="col">Status</th>
                     <th scope="col"><i class="bi bi-check2-circle"></i></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +30,22 @@
                 <tr>
                     <td scope="row">{{task.content}}</td>
                     <td>{{task.duedate}}</td>
-                    <td>{{task.assigned[0].username}}</td>
+                    <td>
+                        <div class="dropdown-center">
+                            {{task.assigned[0].username}} 
+                            <a href="#" style="color:black" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-arrow-bar-down"></i>
+                            </a>
+                        <ul class="dropdown-menu">
+                            {%for user in task.assigned%}
+                            <li class="dropdown-item">{{user.username}}</li>
+                            {%endfor%}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
+
+                        </ul>
+                    </div>
+                    </td>
                     <td>{%if task.overdue%}
                         <i class="bi bi-patch-minus-fill" style = "color: red"></i>
                         {%else%}
@@ -36,6 +53,16 @@
                         {%endif%}
                     </td>
                     <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button type="submit"><i class="bi bi-check-square"></i></button></form></td>
+                    <td>
+                        <div class="btn-group dropend">
+                            <button type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{task.id}}">Cambiar Fecha</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
+                                <li><form method="post" action="{{url_for('views.post_delete_task')}}"><input type="hidden" value="{{task.id}}" name="task"><input type="hidden" value="{{project.id}}" name="id"><input type="hidden" value="proyect" name="type"><button type="submit" class="dropdown-item">Eliminar</button></form></li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
                 {%endif%}
                 {%endfor%}
@@ -59,17 +86,71 @@
                     <tr>
                         <td scope="row">{{task.content}}</td>
                         <td>{{task.duedate}}</td>
-                        <td>{{task.assigned[0].username}}</td>
+                        <td>
+                            <div class="dropdown-center">
+                                    {{task.assigned[0].username}} 
+                                    <a href="#" style="color:black" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-arrow-bar-down"></i>
+                                    </a>
+                                <ul class="dropdown-menu">
+                                    {%for user in task.assigned%}
+                                    <li class="dropdown-item">{{user.username}}</li>
+                                    {%endfor%}
+                                </ul>
+                            </div>
+                        </td>
                         <td><i class="bi bi-patch-check-fill" style="color: green;"></i></td>
                     </tr>
                     {%endif%}
                     {%endfor%}
                 </tbody>
-                </div>
             </table>
-
         </div>
-        
+    </div>
+    <div class="modal fade" id="cambiarfecha" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cambiar Fecha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{url_for('views.post_change_duedate')}}">
+                        <input type="hidden" class="hiddenField" name="task">
+                        <input type="date" class="form-control" name="duedate">
+                        <input type="hidden" value="{{project.id}}" name="id">
+                        <input type="hidden" value="proyect" name="type">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Cambiar Fecha</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="asignar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Asignar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center"">
+                    <form method="post" action="{{url_for('views.post_assign_task')}}">
+                        <input type="hidden" class="hiddenField" name="task">
+                        <input type="hidden" value="{{project.id}}" name="id">
+                        <input type="hidden" value="proyect" name="type">
+                        <select class="form-select"  style="width: 200px;" name="user">
+                            <option selected>Usuario</option>
+                            {%for user in users %}
+                            <option value="{{user.id}}">{{user.username}}</option>
+                            {%endfor%}
+                        </select>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Asignar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {%endblock%}

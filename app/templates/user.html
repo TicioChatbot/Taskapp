@@ -1,5 +1,6 @@
 {% extends "base.html"%}
 {%block title%}{{user.username}}{%endblock%}
+{%block origin%}<input type="hidden" value="user" name="type"><input type="hidden" value="{{user.id}}" name="id">{%endblock%}
 {%block content%}
 <div class="container-fluid">
     <div class="container">
@@ -19,6 +20,7 @@
                     <th scope="col">Proyecto</th>
                     <th scope="col">Status</th>
                     <th scope="col"><i class="bi bi-check2-circle"></i></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +38,16 @@
                         {%endif%}
                     </td>
                     <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button type="submit"><i class="bi bi-check-square"></i></button></form></td>
+                    <td>
+                        <div class="btn-group dropend">
+                            <button type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{task.id}}">Cambiar Fecha</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
+                                <li><form method="post" action="{{url_for('views.post_delete_task')}}"><input type="hidden" value="{{task.id}}" name="task"><input type="hidden" value="{{user.id}}" name="id"><input type="hidden" value="user" name="type"><button type="submit" class="dropdown-item">Eliminar</button></form></li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
                 {%endif%}
                 {%endfor%}
@@ -54,19 +66,64 @@
                 </thead>
                 <tbody>
                     <div class="d-none">{{user.backref.sort()}}</div>
-                    {%for task in user.backref%}
-                    {%if task.complete%}
-                    <tr>
-                        <td scope="row">{{task.content}}</td>
-                        <td>{{task.duedate}}</td>
-                        <td>{{task.find_project()}}</td>
-                        <td><i class="bi bi-patch-check-fill" style="color: green;"></i></td>
-                    </tr>
-                    {%endif%}
-                    {%endfor%}
+                        {%for task in user.backref%}
+                        {%if task.complete%}
+                        <tr>
+                            <td scope="row">{{task.content}}</td>
+                            <td>{{task.duedate}}</td>
+                            <td>{{task.find_project()}}</td>
+                            <td><i class="bi bi-patch-check-fill" style="color: green;"></i></td>
+                        </tr>
+                        {%endif%}
+                        {%endfor%}
+                    </div>
                 </tbody>
-                </div>
             </table>
+    </div>
+    <div class="modal fade" id="cambiarfecha" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cambiar Fecha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{url_for('views.post_change_duedate')}}">
+                        <input type="hidden" class="hiddenField" name="task">
+                        <input type="date" class="form-control" name="duedate">
+                        <input type="hidden" value="{{user.id}}" name="id">
+                        <input type="hidden" value="user" name="type">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Cambiar Fecha</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="asignar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Asignar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center"">
+                    <form method="post" action="{{url_for('views.post_assign_task')}}">
+                        <input type="hidden" class="hiddenField" name="task">
+                        <input type="hidden" value="{{user.id}}" name="id">
+                        <input type="hidden" value="user" name="type">
+                        <select class="form-select"  style="width: 200px;" name="user">
+                            <option selected>Usuario</option>
+                            {%for user in users %}
+                            <option value="{{user.id}}">{{user.username}}</option>
+                            {%endfor%}
+                        </select>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Asignar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {%endblock%}

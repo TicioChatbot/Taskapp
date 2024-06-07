@@ -4,13 +4,12 @@ from .utils import *
 from datetime import datetime
 import os 
 
-date_format = "%Y-%m-%d"
 view_blueprint =Blueprint('views', __name__)
-color = os.environ.get('color', default='#0F54B3')
+color = os.environ.get('color', default='#910A0A')
 
 @view_blueprint.context_processor
 def inject_globals():
-    return make_variabes(color)
+    return make_variables(color)
 
 @view_blueprint.get('/')
 def get_home(): 
@@ -43,16 +42,29 @@ def post_create_task():
         task_id = create_task(content, duedate, project)
         user_id = int(request.form['user'])
         assign_task(user_id, task_id)
-        return redirect(url_for('views.get_home'))
+        return redirect(find_redirect(request.form['type'], request.form['id']))
     except:
-        return redirect(url_for('views.get_home'))
+        return redirect(find_redirect(request.form['type'], request.form['id']))
 
 @view_blueprint.post('/assign_task')
 def post_assign_task():
     user_id = request.form['user']
     task_id = request.form['task']
     assign_task(user_id, task_id)
-    return redirect(url_for('views.get_home'))
+    return redirect(find_redirect(request.form['type'], request.form['id']))
+
+@view_blueprint.post('/change_duedate')
+def post_change_duedate():
+    task_id = request.form['task']
+    duedate = request.form['duedate']
+    change_duedate(task_id, duedate)
+    return redirect(find_redirect(request.form['type'], request.form['id']))
+
+@view_blueprint.post('/delete_task')
+def post_delete_task():
+    task_id = request.form['task']
+    delete_task(task_id)
+    return redirect(find_redirect(request.form['type'], request.form['id']))
 
 @view_blueprint.get('/user/<int:user_id>')
 def user_dashboard(user_id):
