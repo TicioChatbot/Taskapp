@@ -44,6 +44,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{task.id}}">Cambiar Fecha</a></li>
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{task.id}}">Editar</a></li>
                                 <li><form method="post" action="{{url_for('views.post_delete_task')}}"><input type="hidden" value="{{task.id}}" name="task"><input type="hidden" value="{{user.id}}" name="id"><input type="hidden" value="user" name="type"><button type="submit" class="dropdown-item">Eliminar</button></form></li>
                             </ul>
                         </div>
@@ -120,6 +121,26 @@
                         </select>
                         <br>
                         <button type="submit" class="btn btn-primary">Asignar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center"">
+                    <form method="post" action="{{url_for('views.post_edit_task')}}">
+                        <input type="hidden" class="hiddenField" name="task">
+                        <input type="hidden" value="{{user.id}}" name="id">
+                        <input type="hidden" value="proyect" name="type">
+                        <input type="text" placeholder="Tarea" class="form-control" name="content">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Editar</button>
                     </form>
                 </div>
             </div>

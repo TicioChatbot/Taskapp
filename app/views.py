@@ -53,6 +53,13 @@ def post_assign_task():
     assign_task(user_id, task_id)
     return redirect(find_redirect(request.form['type'], request.form['id']))
 
+@view_blueprint.post('/unassign')
+def post_unassign():
+    user_id = request.form['user']
+    task_id = request.form['task']
+    unassign(user_id, task_id)
+    return redirect(find_redirect(request.form['type'], request.form['id']))
+
 @view_blueprint.post('/change_duedate')
 def post_change_duedate():
     task_id = request.form['task']
@@ -64,6 +71,13 @@ def post_change_duedate():
 def post_delete_task():
     task_id = request.form['task']
     delete_task(task_id)
+    return redirect(find_redirect(request.form['type'], request.form['id']))
+
+@view_blueprint.post('/edit_task')
+def post_edit_task():
+    task_id = request.form['task']
+    content = request.form['content']
+    change_content(task_id, content)
     return redirect(find_redirect(request.form['type'], request.form['id']))
 
 @view_blueprint.get('/user/<int:user_id>')

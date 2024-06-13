@@ -31,6 +31,16 @@ def assign_task(user_id, task_id):
     db.session.commit()
     return 'Success!' 
 
+def unassign(user_id, task_id): 
+    user = User.query.filter_by(id=user_id).first()
+    task = Task.query.filter_by(id=task_id).first()
+    if len(task.assigned) > 1:  
+        task.assigned.remove(user)
+        db.session.commit()
+        return 'Success!'
+    else:
+        return 'Failure!'
+
 def create_project(name):
     project = Project(name=name)
     db.session.add(project)
@@ -40,6 +50,12 @@ def create_project(name):
 def change_duedate(task_id, duedate):
     task = Task.query.filter_by(id=task_id).first()
     task.duedate = datetime.strptime(duedate, date_format)
+    db.session.commit()
+    return 'Success!'
+
+def change_content(task_id, content):
+    task = Task.query.filter_by(id=task_id).first()
+    task.content = content
     db.session.commit()
     return 'Success!'
 
