@@ -33,6 +33,29 @@ def post_create_user():
     create_user(user)
     return redirect(url_for('views.get_home'))
 
+@view_blueprint.post('/edit_user')
+def post_edit_user():
+    user_id = request.form['user']
+    username = request.form['username']
+    edit_user(user_id, username)
+    return redirect(url_for('views.get_home'))
+
+@view_blueprint.post('/simple_delete_user')
+def post_simple_delete_user():
+    user_id = request.form['user']
+    simple_delete(user_id)
+    return redirect(url_for('views.get_home'))
+
+@view_blueprint.post('/migrate_delete_user')
+def post_migrate_delete_user():
+    user_id = request.form['user']
+    migrate_id = request.form['migrate']
+    if user_id == migrate_id:
+        return redirect(url_for('views.get_home'))
+    else:
+        migrate_delete(user_id, migrate_id)
+        return redirect(url_for('views.get_home'))
+
 @view_blueprint.post('/create_task')
 def post_create_task():
     try:
@@ -108,7 +131,7 @@ def project_dashboard(project_id):
     db.session.commit()
     projects = Project.query.all()
     project = Project.query.filter_by(id=project_id).first()
-    return render_template('project.html', project = project, users = users, task=tasks, projects=projects)
+    return render_template('project.html', project = project, users = users, task=tasks, projects=projects, len = len)
 
 @view_blueprint.post('/project/<int:project_id>')
 def post_project_dashboard(project_id):

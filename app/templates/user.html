@@ -108,7 +108,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Asignar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex flex-column justify-content-center align-items-center"">
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                     <form method="post" action="{{url_for('views.post_assign_task')}}">
                         <input type="hidden" class="hiddenField" name="task">
                         <input type="hidden" value="{{user.id}}" name="id">
@@ -133,7 +133,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex flex-column justify-content-center align-items-center"">
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                     <form method="post" action="{{url_for('views.post_edit_task')}}">
                         <input type="hidden" class="hiddenField" name="task">
                         <input type="hidden" value="{{user.id}}" name="id">

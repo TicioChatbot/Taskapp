@@ -31,28 +31,31 @@
                     <td scope="row">{{task.content}}</td>
                     <td>{{task.duedate}}</td>
                     <td>
-                        <div class="dropdown-center">
-                            {{task.assigned[0].username}} 
-                            <a href="#" style="color:black" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-arrow-bar-down"></i>
-                            </a>
-                        <ul class="dropdown-menu">
-                            {%for user in task.assigned%}
-                            <li class="dropdown-item">
-                                {{user.username}}
-                                <form method="post" action="{{url_for('views.post_unassign')}}">
-                                    <input type="hidden" name="user" value="{{user.id}}">
-                                    <input type="hidden" name="task" value="{{task.id}}">
-                                    <input type="hidden" value="proyect" name="type">
-                                    <input type="hidden" value="{{project.id}}" name="id">
-                                    <button class="remove-user" type="submit"><i class="bi bi-x"></i></button>
-                                </form>
-                            </li>
-                            {%endfor%}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
-
-                        </ul>
+                        {%if len(task.assigned) > 0%}
+                            <div class="dropdown-center">
+                                {{task.assigned[0].username}} 
+                                <a href="#" style="color:black" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-arrow-bar-down"></i>
+                                </a>
+                            <ul class="dropdown-menu">
+                                {%for user in task.assigned%}
+                                <li class="dropdown-item">
+                                    {{user.username}}
+                                    <form method="post" action="{{url_for('views.post_unassign')}}">
+                                        <input type="hidden" name="user" value="{{user.id}}">
+                                        <input type="hidden" name="task" value="{{task.id}}">
+                                        <input type="hidden" value="proyect" name="type">
+                                        <input type="hidden" value="{{project.id}}" name="id">
+                                        <button class="remove-user" type="submit"><i class="bi bi-x"></i></button>
+                                    </form>
+                                </li>
+                                {%endfor%}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
+                            </ul>
+                            {%else%}
+                            Sin asignar
+                            {%endif%}
                     </div>
                     </td>
                     <td>{%if task.overdue%}
@@ -144,7 +147,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Asignar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex flex-column justify-content-center align-items-center"">
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                     <form method="post" action="{{url_for('views.post_assign_task')}}">
                         <input type="hidden" class="hiddenField" name="task">
                         <input type="hidden" value="{{project.id}}" name="id">
@@ -169,7 +172,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex flex-column justify-content-center align-items-center"">
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                     <form method="post" action="{{url_for('views.post_edit_task')}}">
                         <input type="hidden" class="hiddenField" name="task">
                         <input type="hidden" value="{{project.id}}" name="id">

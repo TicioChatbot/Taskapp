@@ -12,6 +12,7 @@
                 <th scope="col">Carga laboral %</th>
                 <th scope="col">A tiempo</th>
                 <th scope="col">A tiempo %</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -22,12 +23,76 @@
                 <td>{{user.carga_laboral_pctg(activas)}}</td>
                 <td>{{user.on_time_total()}}</td>
                 <td>{{user.on_time_pctg()}}</td>
+                <td>
+                    <div class="btn-group dropend">
+                        <button type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{user.id}}">Editar</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#eliminar" data-field="{{user.id}}">Eliminar</a></li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
             {%endfor%}
         </tbody>
         </div>
     </table>
-    
-</div>
+    <div class="modal fade" id="editar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                    <form method="post" action="{{url_for('views.post_edit_user')}}">
+                        <input type="hidden" class="hiddenField" name="user">
+                        <input type="text" placeholder="Nombre de Usuario" class="form-control" name="username">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="eliminar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                    <p>Al eliminar el usuario, todas sus tareas seran desasignadas. Puede proceder o migrar sus tareas a otro usuario</p>
+                        <div class = "row">
+                            <form class="col-12 col-md-auto" method="post" action="{{url_for('views.post_simple_delete_user')}}">
+                                <input type="hidden" class="hiddenField" name="user">
+                                <button type="submit" class="btn btn-primary">Eliminar</button>
+                            </form>
+                            <div class="col-12 col-md-auto">
+                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#demoCollapse" aria-expanded="false" aria-controls="demoCollapse">Migrar</button>
+                            </div>
+                        </div>
+                    <div class="collapse" id="demoCollapse">
+                        <form class ="row" method="post" action="{{url_for('views.post_migrate_delete_user')}}">
+                            <input type="hidden" class="hiddenField" name="user">
+                            <div class="col-12 col-md-auto">
+                                <select class="form-select"  style="width: 200px;" name="migrate">
+                                    <option selected>Usuario</option>
+                                    {%for user in users %}
+                                    <option value="{{user.id}}">{{user.username}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                            <br>
+                            <div class="col-12 col-md-auto"> 
+                                <button type="submit" class="btn btn-primary">Finalizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {%endblock%}

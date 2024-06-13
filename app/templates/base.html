@@ -135,26 +135,27 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var modals = document.querySelectorAll('.modal.fade');
+            document.addEventListener('DOMContentLoaded', function () {
+                var modals = document.querySelectorAll('.modal.fade');
 
-                    modals.forEach(function (modal) {
-                        modal.addEventListener('show.bs.modal', function (event) {
-                            // Button that triggered the modal
-                            var button = event.relatedTarget;
+                modals.forEach(function (modal) {
+                    modal.addEventListener('show.bs.modal', function (event) {
+                        // Button that triggered the modal
+                        var button = event.relatedTarget;
 
-                            // Extract info from data-* attribute
-                            var field = button.getAttribute('data-field');
+                        // Extract info from data-* attribute
+                        var field = button.getAttribute('data-field');
 
-                            // Update the modal's hidden input field
-                            var inputField = modal.querySelector('.hiddenField');
+                        // Update the modal's hidden input fields
+                        var inputFields = modal.querySelectorAll('.hiddenField');
 
-                            if (inputField) {
-                                inputField.value = field;
-                            }
+                        inputFields.forEach(function (inputField) {
+                            inputField.value = field;
                         });
                     });
                 });
+            });
         </script>
+
     </body>
 </html>

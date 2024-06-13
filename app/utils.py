@@ -11,7 +11,21 @@ def create_user(username):
     db.session.add(user)
     db.session.commit()
     return 'Success!' 
-    
+
+def edit_user(user_id, username):
+    user = User.query.filter_by(id=user_id).first()
+    user.username = username
+    db.session.commit()
+    return 'Success!' 
+
+def diagnose_delete(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    danger_tasks = []
+    for task in user.backref:
+        if len(task.assigned) == 1: 
+            danger_tasks.append(task)
+    return danger_tasks
+
 def create_task(content, duedate, project_id):
     task = Task(content=content, duedate=duedate, project_id = project_id)
     db.session.add(task)
@@ -33,13 +47,26 @@ def assign_task(user_id, task_id):
 
 def unassign(user_id, task_id): 
     user = User.query.filter_by(id=user_id).first()
-    task = Task.query.filter_by(id=task_id).first()
-    if len(task.assigned) > 1:  
-        task.assigned.remove(user)
-        db.session.commit()
-        return 'Success!'
-    else:
-        return 'Failure!'
+    task = Task.query.filter_by(id=task_id).first() 
+    task.assigned.remove(user)
+    db.session.commit()
+    return 'Success!'
+
+def simple_delete(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return 'Success!' 
+
+def migrate_delete(user_id, migrate_id):
+    user = User.query.filter_by(id=user_id).first()
+    migrate = User.query.filter_by(id= migrate_id).first()
+    for task in user.backref:
+        task.assigned.append(migrate)
+    db.session.delete(user)
+    db.session.commit()
+    return 'Success!' 
+
 
 def create_project(name):
     project = Project(name=name)
