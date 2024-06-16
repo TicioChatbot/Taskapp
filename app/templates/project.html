@@ -101,15 +101,31 @@
                         <td>{{task.duedate}}</td>
                         <td>
                             <div class="dropdown-center">
+                                {%if len(task.assigned) > 0%}
+                                <div class="dropdown-center">
                                     {{task.assigned[0].username}} 
                                     <a href="#" style="color:black" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-arrow-bar-down"></i>
                                     </a>
                                 <ul class="dropdown-menu">
                                     {%for user in task.assigned%}
-                                    <li class="dropdown-item">{{user.username}}</li>
+                                    <li class="dropdown-item">
+                                        {{user.username}}
+                                        <form method="post" action="{{url_for('views.post_unassign')}}">
+                                            <input type="hidden" name="user" value="{{user.id}}">
+                                            <input type="hidden" name="task" value="{{task.id}}">
+                                            <input type="hidden" value="proyect" name="type">
+                                            <input type="hidden" value="{{project.id}}" name="id">
+                                            <button class="remove-user" type="submit"><i class="bi bi-x"></i></button>
+                                        </form>
+                                    </li>
                                     {%endfor%}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
                                 </ul>
+                                {%else%}
+                                Sin asignar
+                                {%endif%}
                             </div>
                         </td>
                         <td><i class="bi bi-patch-check-fill" style="color: green;"></i></td>
