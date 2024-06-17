@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import date 
+from math import floor
 
 db = SQLAlchemy()
 
@@ -20,7 +21,7 @@ class User(db.Model):
     def carga_laboral_pctg(self, activas):
         if activas > 0:
             propias = len([task for task in self.backref if task.complete == False])
-            return f'{propias/activas * 100} %'
+            return f'{floor(propias/activas * 100)} %'
         else: 
             return '0%'
         
@@ -28,7 +29,7 @@ class User(db.Model):
         terminadas = [task for task in self.backref if task.complete == True]
         on_time = [task for task in terminadas if task.overdue == False]
         if len(terminadas) > 0: 
-            return f'{len(on_time)/len(terminadas) * 100} %'
+            return f'{floor(len(on_time)/len(terminadas)) * 100} %'
         else: 
             return '0%'
     
