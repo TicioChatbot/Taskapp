@@ -102,8 +102,7 @@
                                 {%if len(task.assigned) > 0%}
                                 <div class="dropdown-center">
                                     {{task.assigned[0].username}} 
-                                    <a href="#" style="color:black" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-arrow-bar-down"></i>
+                                    <a href="#" class="dropdown-arrow" data-bs-toggle="dropdown" aria-expanded="false">
                                     </a>
                                 <ul class="dropdown-menu">
                                     {%for user in task.assigned%}
