@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .remove-user {
     background: none;
     border: none;
@@ -9,4 +13,100 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+/* Style for the option buttons */
+.option-buttons {
+    background-color: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    display: inline-flex; /* Inline flex for icon */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    transition: color 0.3s, transform 0.2s; /* Smooth color change and scale transition */
+}
+
+/* Style for the icon inside the button */
+.option-buttons i {
+    font-size: 24px; /* Size of the icon */
+    color: black; /* Base black color */
+    transition: color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+/* Hover effect for the button */
+.option-buttons:hover i {
+    color: #333333; /* Darker shade of black on hover */
+    transform: scale(1.1); /* Slightly larger icon on hover */
+}
+
+/* Active effect for the button */
+.option-buttons:active i {
+    color: #666666; /* Lighter shade of black on click */
+    transform: scale(0.9); /* Slightly smaller icon on click */
+}
+
+/* Focus effect for accessibility */
+.option-buttons:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5); /* Add a custom focus ring */
+}
+
+/* Style for the dropdown arrow */
+.dropdown-arrow {
+    display: inline-block; /* Inline display for alignment */
+    width: 0; 
+    height: 0; 
+    margin-left: 8px; /* Space between name and arrow */
+    vertical-align: middle; /* Align with text */
+    border-left: 5px solid transparent; /* Transparent left border */
+    border-right: 5px solid transparent; /* Transparent right border */
+    border-top: 5px solid black; /* Black top border to create the arrow */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: transform 0.2s ease; /* Smooth transition for rotation */
+}
+
+/* Hover effect for the dropdown arrow */
+.dropdown-arrow:hover {
+    border-top-color: black; /* Ensure the color is a bold black */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+    transform: translateY(-2px) scale(1.2); /* Slight upward movement and increase in size */
+}
+
+/* Style for the complete tasks button */
+.complete-tasks-button {
+    background-color: transparent; /* Transparent background */
+    border: 2px solid black; /* Black border */
+    border-radius: 50%; /* Rounded button */
+    width: 24px; /* Button width */
+    height: 24px; /* Button height */
+    display: inline-flex; /* Inline flex for centering content */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    margin-left: 8px; /* Space between the name and the button */
+}
+
+/* Style for the check icon inside the button */
+.complete-tasks-button i {
+    font-size: 16px; /* Size of the icon */
+    color: black; /* Icon color */
+}
+
+/* Hover effect for the complete tasks button */
+.complete-tasks-button:hover {
+    background-color: black; /* Black background on hover */
+    transform: scale(1.1); /* Slightly larger button on hover */
+}
+
+/* Change icon color on hover */
+.complete-tasks-button:hover i {
+    color: white; /* White icon on hover */
+}
+
+/* Active effect for the complete tasks button */
+.complete-tasks-button:active {
+    transform: scale(0.9); /* Slightly smaller button on click */
 }

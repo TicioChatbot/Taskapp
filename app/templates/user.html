@@ -3,11 +3,10 @@
 {%block origin%}<input type="hidden" value="user" name="type"><input type="hidden" value="{{user.id}}" name="id">{%endblock%}
 {%block content%}
 <div class="container-fluid">
-    <div class="container">
+    <div class="d-flex align-items-center">
         <h1>{{user.username}}</h1>
-        <br/>
-        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#demoCollapse" aria-expanded="false" aria-controls="demoCollapse">
-            Mostrar completadas
+        <button class="complete-tasks-button ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#demoCollapse" aria-expanded="false" aria-controls="demoCollapse">
+            <i class="bi bi-person-check"></i>
         </button>
     </div>
     <div class="container">
@@ -37,10 +36,10 @@
                         <i class="bi bi-patch-exclamation-fill" style ="color: rgb(212, 212, 0)"></i>
                         {%endif%}
                     </td>
-                    <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button type="submit"><i class="bi bi-check-square"></i></button></form></td>
+                    <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button class="option-buttons" type="submit"><i class="bi bi-check-square"></i></button></form></td>
                     <td>
                         <div class="btn-group dropend">
-                            <button type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                            <button type="button" class="option-buttons" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{task.id}}">Cambiar Fecha</a></li>
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>

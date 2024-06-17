@@ -3,11 +3,10 @@
 {%block content%}
 {%block origin%}<input type="hidden" value="proyect" name="type"><input type="hidden" value="{{project.id}}" name="id">{%endblock%}
 <div class="container-fluid">
-    <div class="container">
+    <div class="d-flex align-items-center">
         <h1>{{project.name}}</h1>
-        <br/>
-        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#demoCollapse" aria-expanded="false" aria-controls="demoCollapse">
-            Mostrar completadas
+        <button class="complete-tasks-button ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#demoCollapse" aria-expanded="false" aria-controls="demoCollapse">
+            <i class="bi bi-person-check"></i>
         </button>
     </div>
     <div class="container">
@@ -34,8 +33,7 @@
                         {%if len(task.assigned) > 0%}
                             <div class="dropdown-center">
                                 {{task.assigned[0].username}} 
-                                <a href="#" style="color:black" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-arrow-bar-down"></i>
+                                <a href="#" class="dropdown-arrow" data-bs-toggle="dropdown" aria-expanded="false">
                                 </a>
                             <ul class="dropdown-menu">
                                 {%for user in task.assigned%}
@@ -64,10 +62,10 @@
                         <i class="bi bi-patch-exclamation-fill" style ="color: rgb(212, 212, 0)"></i>
                         {%endif%}
                     </td>
-                    <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button type="submit"><i class="bi bi-check-square"></i></button></form></td>
+                    <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button class = "option-buttons" type="submit"><i class="bi bi-check-square"></i></button></form></td>
                     <td>
                         <div class="btn-group dropend">
-                            <button type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                            <button class="option-buttons" type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{task.id}}">Cambiar Fecha</a></li>
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
