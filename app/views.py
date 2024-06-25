@@ -9,6 +9,7 @@ color = os.environ.get('color', default='#910A0A')
 
 @view_blueprint.context_processor
 def inject_globals():
+    print('hi')
     return make_variables(color)
 
 @view_blueprint.get('/')
@@ -165,3 +166,14 @@ def post_kill_project():
     project_id = request.form['id']
     kill_project(project_id)
     return redirect(url_for('views.get_home'))
+
+@view_blueprint.get('/colorpicker')
+def get_colorpicker():
+    return render_template('colorpicker.html')
+
+@view_blueprint.post('/colorpicker')
+def post_colorpicker():
+    global color
+    new_color = request.form['color']
+    color = new_color
+    return render_template('colorpicker.html')
