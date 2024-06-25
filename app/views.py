@@ -153,3 +153,15 @@ def get_create_project():
     tasks = Task.query.all()
     projects = Project.query.all()
     return render_template('create_project.html', users = users, tasks = tasks, projects = projects)
+
+@view_blueprint.post('/delete_project')
+def post_delete_project(): 
+    project_id = request.form['id']
+    delete_project(project_id)
+    return redirect(url_for('views.get_home'))
+
+@view_blueprint.post('/kill_project')
+def post_kill_project(): 
+    project_id = request.form['id']
+    kill_project(project_id)
+    return redirect(url_for('views.get_home'))

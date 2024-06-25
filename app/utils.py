@@ -74,6 +74,24 @@ def create_project(name):
     db.session.commit()
     return 'Success!'
 
+def delete_project(project_id): 
+    project = Project.query.filter_by(id = project_id).first()
+    for task in project.tasks:
+        if task.complete == False: 
+            delete_task(task.id)
+    db.session.delete(project)
+    db.session.commit()
+    return 'Success!'
+
+def kill_project(project_id): 
+    project = Project.query.filter_by(id = project_id).first()
+    for task in project.tasks: 
+        delete_task(task.id)
+    db.session.delete(project)
+    db.session.commit()
+    return 'Success!'
+    
+
 def change_duedate(task_id, duedate):
     task = Task.query.filter_by(id=task_id).first()
     task.duedate = datetime.strptime(duedate, date_format)

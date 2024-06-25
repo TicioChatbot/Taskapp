@@ -65,7 +65,10 @@ class Task(db.Model):
 
     def find_project(self):
         project = Project.query.filter_by(id=self.project_id).first()
-        return project.name
+        if project:
+            return project.name
+        else:
+            return 'deleted project'
 
     def is_overdue(self):
         if not self.complete: 
