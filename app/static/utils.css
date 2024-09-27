@@ -9,6 +9,21 @@ html {
     cursor: pointer;
 }
 
+.dropdown-menu {
+    z-index: 1000; /* Asegura que el dropdown esté por encima de otros elementos */
+    position: absolute; /* Asegura que se posicione correctamente respecto al botón */
+    top: 100%; /* Desplaza el menú justo debajo del botón */
+    left: 0; /* Alinea el menú a la izquierda */
+    width: auto; /* Deja que el ancho del menú sea determinado por el contenido */
+    padding: 0.5rem 0; /* Ajusta el padding */
+    margin: 0; /* Elimina márgenes */
+    background-color: #fff; /* Color de fondo */
+    border: 1px solid rgba(0,0,0,.15); /* Añade borde */
+    border-radius: 0.25rem; /* Bordes redondeados */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
+
+
 .dropdown-item {
     display: flex;
     align-items: center;
