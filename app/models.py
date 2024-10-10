@@ -14,7 +14,11 @@ user_task = db.Table('User_Task',
 class User(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(500))
+    notes = db.relationship('Note', backref='author')
 
+    def mkdict(self):
+        return {"id": self.id, "username": self.username, "notes": self.notes}
+    
     def __repr__(self):
         return self.username
     
@@ -50,12 +54,16 @@ class User(db.Model):
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(500))
+    content = db.Column(db.String(10000))
     assigned = db.relationship('User', secondary= user_task, backref='backref')
+    notes = db.relationship('Note', backref='tasks')
     duedate = db.Column(db.Date())
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     complete = db.Column(db.Boolean, default=False)
     overdue = db.Column(db.Boolean, default=False)
+
+    def mkdict(self):
+        return {"id": self.id, "content": self.content, "assigned": self.assigned, "notes":self.notes, "duedate": self.duedate, "project_id": self.project_id, "complete": self.complete, "overdue": self.overdue}
 
     def __repr__(self):
         return self.content
@@ -77,6 +85,12 @@ class Task(db.Model):
                 self.overdue = True
             else: 
                 self.overdue = False
+    
+    def task_hashtag(self):
+        return f"#task{self.id}"
+    
+    def task_finder(self):
+        return f"task{self.id}"
 
 
 class Project(db.Model):
@@ -84,7 +98,21 @@ class Project(db.Model):
     name = db.Column(db.String(500))
     tasks = db.relationship('Task', backref='project')
 
+    def mkdict(self):
+        return {"id":self.id, "name":self.name, "tasks":self.tasks} 
+    
     def __repr__(self):
         return self.name
 
+class Note(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))    
+    content = db.Column(db.String(10000))
+
+    def mkdict(self):
+        return {"id":self.id, "task_id": self.task_id, "user_id": self.user_id, "content":self.content}
+    
+    def __repr__(self):
+        return self.id
 

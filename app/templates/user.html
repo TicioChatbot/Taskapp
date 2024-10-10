@@ -18,41 +18,48 @@
                     <th scope="col">Fecha</th>
                     <th scope="col">Proyecto</th>
                     <th scope="col">Status</th>
-                    <th scope="col"><i class="bi bi-check2-circle"></i></th>
-                    <th scope="col"></th>
+                    <th scope="col">Comentarios</th>  <!-- Added column for Comentarios -->
+                    <th scope="col"></th>  <!-- Extra column for options/actions -->
                 </tr>
             </thead>
             <tbody>
-                <div class="d-none">{{user.backref.sort()}}</div>
-                {%for task in user.backref%}
-                {%if not task.complete%}
+                {% for task in user.backref %}
+                {% if not task.complete %}
                 <tr>
-                    <td scope="row">{{task.content}}</td>
-                    <td>{{task.duedate}}</td>
-                    <td>{{task.find_project()}}</td>
-                    <td>{%if task.overdue%}
-                        <i class="bi bi-patch-minus-fill" style = "color: red"></i>
-                        {%else%}
-                        <i class="bi bi-patch-exclamation-fill" style ="color: rgb(212, 212, 0)"></i>
-                        {%endif%}
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.duedate }}</td>
+                    <td>{{ task.project }}</td>
+                    <td>
+                        {% if task.overdue %}
+                            <i class="bi bi-patch-minus-fill" style="color: red"></i>
+                        {% else %}
+                            <i class="bi bi-patch-exclamation-fill" style="color: rgb(212, 212, 0)"></i>
+                        {% endif %}
                     </td>
-                    <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button class="option-buttons" type="submit"><i class="bi bi-check-square"></i></button></form></td>
+                    <td>
+                        <a class = "option-buttons" href="#" data-bs-toggle="modal" data-bs-target="{{task.task_hashtag()}}"><i class="bi bi-card-text"></i></a>   
+                    </td>
                     <td>
                         <div class="btn-group dropend">
-                            <button type="button" class="option-buttons" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                            <button class="option-buttons" type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{task.id}}">Cambiar Fecha</a></li>
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{task.id}}">Editar</a></li>
-                                <li><form method="post" action="{{url_for('views.post_delete_task')}}"><input type="hidden" value="{{task.id}}" name="task"><input type="hidden" value="{{user.id}}" name="id"><input type="hidden" value="user" name="type"><button type="submit" class="dropdown-item">Eliminar</button></form></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{ task.id }}">Cambiar Fecha</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{ task.id }}">Asignar</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{ task.id }}">Editar</a></li>
+                                <li>
+                                    <form method="post" action="{{ url_for('views.post_delete_task') }}">
+                                        <input type="hidden" value="{{ task.id }}" name="task">
+                                        <input type="hidden" value="{{ task.project }}" name="id">
+                                        <button type="submit" class="dropdown-item">Eliminar</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </td>
                 </tr>
-                {%endif%}
-                {%endfor%}
+                {% endif %}
+                {% endfor %}
             </tbody>
-            </div>
         </table>
         <div class="collapse" id="demoCollapse">
             <table class="table">
@@ -60,26 +67,46 @@
                     <tr>
                         <th scope="col">Tarea</th>
                         <th scope="col">Fecha</th>
-                        <th scope="col">Asignado</th>
+                        <th scope="col">Proyecto</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Comentarios</th>  <!-- Added column for Comentarios -->
+                        <th scope="col"></th>  <!-- Extra column for options/actions -->
                     </tr>
                 </thead>
                 <tbody>
-                    <div class="d-none">{{user.backref.sort()}}</div>
-                        {%for task in user.backref%}
-                        {%if task.complete%}
-                        <tr>
-                            <td scope="row">{{task.content}}</td>
-                            <td>{{task.duedate}}</td>
-                            <td>{{task.find_project()}}</td>
-                            <td><i class="bi bi-patch-check-fill" style="color: green;"></i></td>
-                        </tr>
-                        {%endif%}
-                        {%endfor%}
-                    </div>
+                    {% for task in user.backref %}
+                    {% if task.complete %}
+                    <tr>
+                        <td>{{ task.content }}</td>
+                        <td>{{ task.duedate }}</td>
+                        <td>{{ task.project }}</td>
+                        <td><i class="bi bi-patch-check-fill" style="color: green;"></i></td>
+                        <td>
+                            <a class = "option-buttons" href="#" data-bs-toggle="modal" data-bs-target="{{task.task_hashtag()}}"><i class="bi bi-card-text"></i></a>   
+                        </td>
+                        <td>
+                            <div class="btn-group dropend">
+                                <button class="option-buttons" type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{ task.id }}">Cambiar Fecha</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{ task.id }}">Asignar</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{ task.id }}">Editar</a></li>
+                                    <li>
+                                        <form method="post" action="{{ url_for('views.post_delete_task') }}">
+                                            <input type="hidden" value="{{ task.id }}" name="task">
+                                            <input type="hidden" value="{{ task.project }}" name="id">
+                                            <button type="submit" class="dropdown-item">Eliminar</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
                 </tbody>
             </table>
-    </div>
+        </div>
     <div class="modal fade" id="cambiarfecha" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -145,5 +172,49 @@
             </div>
         </div>
     </div>
+    {%for task in user.backref%}
+    <div class="modal fade" id="{{task.task_finder()}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Comentarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Display existing comments -->
+                {% for note in task.notes %}
+                <div class="mb-2">
+                    <h6 class="mb-1">{{ note.author }}</h6>
+                    <p>{{ note.content }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <!-- Add new comment form -->
+                <form class="row g-3" method="post" action="{{ url_for('views.post_create_note') }}">
+                    <div class="col-12 col-md-6">
+                        <select class="form-select" name="user">
+                            <option selected>Autor</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input type="text" class="form-control" name="content" placeholder="Añadir comentario">
+                    </div>
+                    <!-- Hidden fields -->
+                    <input type="hidden" name="task" value="{{ task.id }}">
+                    <input type="hidden" name="project" value="{{ task.project.id }}">
+                    <!-- Submit button -->
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary w-100">Comentar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endfor %}
 </div>
 {%endblock%}

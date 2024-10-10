@@ -120,11 +120,27 @@ def on_time(user):
     else: 
         return '0% 0/0'
     
-def adjust_component(comp, factor):
+def create_note(content, task_id, user_id):
+    note = Note(content = content, task_id = task_id, user_id = user_id)
+    db.session.add(note)
+    db.session.commit()
+    return 'Success!'
 
+def edit_note(note_id, content):
+    note = Note.query.find_by(id=note_id).first()
+    note.content = content
+    db.session.commit()
+    return 'Success!'
+
+def delete_note(note_id):
+    note = Note.query.filter_by(id=note_id).first()
+    db.session.delete(note)
+    db.session.commit()
+    return 'Success!'
+
+def adjust_component(comp, factor):
     adjusted_value = comp * factor
     clamped_value = max(0, min(255, int(adjusted_value)))
-
     return clamped_value
 
 #0.8 darkens, 1.2 lightens

@@ -21,17 +21,17 @@
                     <th scope="col">Fecha</th>
                     <th scope="col">Asignado</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Comentarios</th>  <!-- Added column for Comentarios -->
                     <th scope="col"><i class="bi bi-check2-circle"></i></th>
-                    <th scope="col"></th>
+                    <th scope="col"></th>  <!-- Extra column for options/actions -->
                 </tr>
             </thead>
             <tbody>
-                <div class="d-none">{{project.tasks.sort()}}</div>
-                {%for task in project.tasks%}
-                {%if not task.complete%}
+                {% for task in project.tasks %}
+                {% if not task.complete %}
                 <tr>
-                    <td scope="row">{{task.content}}</td>
-                    <td>{{task.duedate}}</td>
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.duedate }}</td>
                     <td>
                         {%if len(task.assigned) > 0%}
                             <div class="dropdown-center">
@@ -59,30 +59,45 @@
                             {%endif%}
                     </div>
                     </td>
-                    <td>{%if task.overdue%}
-                        <i class="bi bi-patch-minus-fill" style = "color: red"></i>
-                        {%else%}
-                        <i class="bi bi-patch-exclamation-fill" style ="color: rgb(212, 212, 0)"></i>
-                        {%endif%}
+                    <td>
+                        {% if task.overdue %}
+                            <i class="bi bi-patch-minus-fill" style="color: red"></i>
+                        {% else %}
+                            <i class="bi bi-patch-exclamation-fill" style="color: rgb(212, 212, 0)"></i>
+                        {% endif %}
                     </td>
-                    <td><form method="post"><input type="hidden" value="{{task.id}}" name="id"><button class = "option-buttons" type="submit"><i class="bi bi-check-square"></i></button></form></td>
+                    <td>
+                        <a class = "option-buttons" href="#" data-bs-toggle="modal" data-bs-target="{{task.task_hashtag()}}"><i class="bi bi-card-text"></i></a>   
+                    </td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" value="{{ task.id }}" name="id">
+                            <button class="option-buttons" type="submit"><i class="bi bi-check-square"></i></button>
+                        </form>
+                    </td>
                     <td>
                         <div class="btn-group dropend">
                             <button class="option-buttons" type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{task.id}}">Cambiar Fecha</a></li>
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{task.id}}">Asignar</a></li>
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{task.id}}">Editar</a></li>
-                                <li><form method="post" action="{{url_for('views.post_delete_task')}}"><input type="hidden" value="{{task.id}}" name="task"><input type="hidden" value="{{project.id}}" name="id"><input type="hidden" value="proyect" name="type"><button type="submit" class="dropdown-item">Eliminar</button></form></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{ task.id }}">Cambiar Fecha</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{ task.id }}">Asignar</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{ task.id }}">Editar</a></li>
+                                <li>
+                                    <form method="post" action="{{ url_for('views.post_delete_task') }}">
+                                        <input type="hidden" value="{{ task.id }}" name="task">
+                                        <input type="hidden" value="{{ project.id }}" name="id">
+                                        <button type="submit" class="dropdown-item">Eliminar</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </td>
                 </tr>
-                {%endif%}
-                {%endfor%}
+                {% endif %}
+                {% endfor %}
             </tbody>
-            </div>
         </table>
+        </div>
         <div class="collapse" id="demoCollapse">
             <table class="table">
                 <thead>
@@ -91,18 +106,18 @@
                         <th scope="col">Fecha</th>
                         <th scope="col">Asignado</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Comentarios</th>  <!-- Added column for Comentarios -->
+                        <th scope="col"></th>  <!-- Extra column for options/actions -->
                     </tr>
                 </thead>
                 <tbody>
-                    <div class="d-none">{{project.tasks.sort()}}</div>
-                    {%for task in project.tasks%}
-                    {%if task.complete%}
+                    {% for task in project.tasks %}
+                    {% if task.complete %}
                     <tr>
-                        <td scope="row">{{task.content}}</td>
-                        <td>{{task.duedate}}</td>
+                        <td>{{ task.content }}</td>
+                        <td>{{ task.duedate }}</td>
                         <td>
-                            <div class="dropdown-center">
-                                {%if len(task.assigned) > 0%}
+                            {%if len(task.assigned) > 0%}
                                 <div class="dropdown-center">
                                     {{task.assigned[0].username}} 
                                     <a href="#" class="dropdown-arrow" data-bs-toggle="dropdown" aria-expanded="false">
@@ -126,12 +141,32 @@
                                 {%else%}
                                 Sin asignar
                                 {%endif%}
-                            </div>
+                        </div>
                         </td>
                         <td><i class="bi bi-patch-check-fill" style="color: green;"></i></td>
+                        <td>
+                            <a class = "option-buttons" href="#" data-bs-toggle="modal" data-bs-target="{{task.task_hashtag()}}"><i class="bi bi-card-text"></i></a>   
+                        </td>
+                        <td>
+                            <div class="btn-group dropend">
+                                <button class="option-buttons" type="button" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarfecha" data-field="{{ task.id }}">Cambiar Fecha</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#asignar" data-field="{{ task.id }}">Asignar</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editar" data-field="{{ task.id }}">Editar</a></li>
+                                    <li>
+                                        <form method="post" action="{{ url_for('views.post_delete_task') }}">
+                                            <input type="hidden" value="{{ task.id }}" name="task">
+                                            <input type="hidden" value="{{ project.id }}" name="id">
+                                            <button type="submit" class="dropdown-item">Eliminar</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
-                    {%endif%}
-                    {%endfor%}
+                    {% endif %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -224,5 +259,50 @@
             </div>
         </div>
     </div>
+    {%for task in project.tasks%}
+    <div class="modal fade" id="{{task.task_finder()}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Comentarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Display existing comments -->
+                {% for note in task.notes %}
+                <div class="mb-2">
+                    <h6 class="mb-1">{{ note.author }}</h6>
+                    <p>{{ note.content }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <!-- Add new comment form -->
+                <form class="row g-3" method="post" action="{{ url_for('views.post_create_note') }}">
+                    <div class="col-12 col-md-6">
+                        <select class="form-select" name="user">
+                            <option selected>Autor</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input type="text" class="form-control" name="content" placeholder="Añadir comentario">
+                    </div>
+                    <!-- Hidden fields -->
+                    <input type="hidden" name="task" value="{{ task.id }}">
+                    <input type="hidden" name="project" value="{{ project.id }}">
+
+                    <!-- Submit button -->
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary w-100">Comentar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endfor %}
 </div>
 {%endblock%}

@@ -45,7 +45,7 @@ html {
 
 /* Style for the icon inside the button */
 .option-buttons i {
-    font-size: 24px; /* Size of the icon */
+    font-size: 20px; /* Size of the icon */
     color: black; /* Base black color */
     transition: color 0.3s, transform 0.2s; /* Smooth transitions */
 }

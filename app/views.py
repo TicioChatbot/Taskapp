@@ -127,12 +127,13 @@ def post_user_dashboard(user_id):
 def project_dashboard(project_id):
     users = User.query.all()
     tasks = Task.query.all()
+    notes = Note.query.all()
     for task in tasks: 
         task.is_overdue()
     db.session.commit()
     projects = Project.query.all()
     project = Project.query.filter_by(id=project_id).first()
-    return render_template('project.html', project = project, users = users, task=tasks, projects=projects, len = len)
+    return render_template('project.html', project = project, users = users, task=tasks, projects=projects, len = len, notes = notes)
 
 @view_blueprint.post('/project/<int:project_id>')
 def post_project_dashboard(project_id):
@@ -177,3 +178,13 @@ def post_colorpicker():
     new_color = request.form['color']
     color = new_color
     return render_template('colorpicker.html')
+
+@view_blueprint.post('/create_note')
+def post_create_note():
+    user_id = request.form['user']
+    task_id = request.form['task']
+    content = request.form['content']
+    project = request.form['project']
+    print(project)
+    create_note(content, task_id, user_id)
+    return redirect(url_for('views.project_dashboard', project_id=project))
